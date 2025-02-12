@@ -95,7 +95,7 @@ void predefinedConfig(std::vector<Particle>& particles) {
     // Moon
     Particle moon;
     moon.mass = 7.348e22;  // Moon's mass
-    moon.position = {1.496e11 + 384400000, 0.0, 5.0};  // Moon's position
+    moon.position = {1.496e11 + 384400000, 0.0, 0.0};  // Moon's position
     moon.velocity = {0.0, 29.78e3 + 1.022e3, 0.0};  // Moon's velocity
     particles.push_back(moon);
 };
@@ -124,24 +124,28 @@ void outputToFile(const std::vector<Particle>& particles, std::ofstream& outFile
 }
 
 int main() {
-    std::vector<Particle> particles;  // A list of particles
-    int numParticles = 20;
-    //predefinedConfig(particles);  // Initialize the particles
-    
-    //Particle p;
+    int numParticles, numSteps, dumpFrequency;
+    double timeStep;
+
+    std::cout << "Enter number of particles: ";
+    std::cin >> numParticles;
+    std::cout << "Enter time step size: ";
+    std::cin >> timeStep;
+    std::cout << "Enter number of iterations: ";
+    std::cin >> numSteps;
+    std::cout << "Enter dump frequency: ";
+    std::cin >> dumpFrequency;
 
     //Initialize random seed
     srand (time(0)); 
 
+    std::vector<Particle> particles;
     randomParticle(particles, numParticles);
 
     std::ofstream outFile("nbody_output.txt");
 
-    // 1 hour time step
-    double timeStep = 3600.0; 
-
     // Simulation loop
-    for (int step = 0; step < numParticles; ++step) {
+    for (int step = 0; step < numSteps; ++step) {
         // Reset the forces for each step
         resetForce(particles);
 
@@ -154,8 +158,10 @@ int main() {
         // Update positions based on velocities and time step
         updatePosition(particles, timeStep);
 
-        // Output particle data to file
-        outputToFile(particles, outFile);
+        // Output particle data to file at the specified frequency
+        if (step % dumpFrequency == 0) {
+            outputToFile(particles, outFile);
+        }
     }
 
     
