@@ -1,0 +1,5 @@
+Enter number of particles: Enter time step size: Enter number of iterations: Enter dump frequency: Simulation output saved to 'nbody_output.txt'.
+
+real	0m49.594s
+user	0m49.367s
+sys	0m0.001s
